@@ -660,12 +660,113 @@
     }
   }
 
+  function metricBar(label, valueText, widthPct, tone) {
+    var row = el("div", "metric-bar");
+    var head = el("div", "metric-bar-head");
+    head.appendChild(el("span", "metric-label", label));
+    head.appendChild(el("span", "metric-value", valueText));
+    row.appendChild(head);
+    var track = el("div", "bar-track");
+    var fill = el("span", "bar-fill " + tone);
+    fill.style.width = Math.max(0, Math.min(100, widthPct)) + "%";
+    track.appendChild(fill);
+    row.appendChild(track);
+    return row;
+  }
+
+  function renderCompare() {
+    els.compare.textContent = "";
+    var vars = DATA.benchmark.controlled_variables || {};
+    var costs = SHAPES.map(function (shape) {
+      return (DATA.shapes[shape] || {}).cost_per_success_vnd || 0;
+    }).filter(function (value) { return value > 0; });
+    var minCost = costs.length ? Math.min.apply(null, costs) : 1;
+    var maxCost = costs.length ? Math.max.apply(null, costs) : 1;
+
+    var grid = el("div", "compare-grid");
+    SHAPES.forEach(function (shape, index) {
+      var metrics = DATA.shapes[shape] || {};
+      var card = el("article", "compare-card" + (shape === state.shape ? " is-selected" : ""));
+      var head = el("div", "compare-card-head");
+      head.appendChild(el("span", "compare-letter", "ABCD"[index] || String(index + 1)));
+      var title = el("div", "compare-title");
+      title.appendChild(el("strong", null, SHAPE_LABELS[shape] || shape));
+      if (shape === state.shape) title.appendChild(el("span", "compare-selected", "selected"));
+      head.appendChild(title);
+      card.appendChild(head);
+
+      var rate = el("p", "compare-rate");
+      rate.appendChild(el("strong", null, formatPct(metrics.pass_rate)));
+      rate.appendChild(el("span", null, "pass rate"));
+      card.appendChild(rate);
+
+      card.appendChild(metricBar("of trials passed", formatPct(metrics.pass_rate), (metrics.pass_rate || 0) * 100, "pass"));
+      var cost = metrics.cost_per_success_vnd || 0;
+      var inverse = cost > 0 ? (minCost / cost) * 100 : 0;
+      card.appendChild(metricBar("cost / success", formatVnd(Math.round(cost)), inverse, "cost"));
+
+      var facts = el("dl", "compare-facts");
+      function fact(label, value) {
+        facts.appendChild(el("dt", null, label));
+        facts.appendChild(el("dd", null, value));
+      }
+      fact("pass^5", formatPct(metrics.pass_5));
+      fact("seed variance", formatRate(metrics.seed_variance));
+      fact("mean steps", metrics.mean_steps === undefined ? "—" : Number(metrics.mean_steps).toFixed(2));
+      fact("model calls", metrics.mean_model_calls === undefined ? "—" : Number(metrics.mean_model_calls).toFixed(2));
+      fact("tool calls", metrics.mean_tool_calls === undefined ? "—" : Number(metrics.mean_tool_calls).toFixed(2));
+      fact("total cost", formatVnd(Math.round(metrics.total_simulated_cost_vnd || 0)));
+      card.appendChild(facts);
+      card.appendChild(el("p", "compare-note", metrics.cost_note || "simulated_not_real_api_price"));
+      grid.appendChild(card);
+    });
+    els.compare.appendChild(grid);
+
+    var seeds = (vars.seeds || []).join(", ");
+    els.compare.appendChild(el("p", "compare-meta", "As of " + (vars.as_of || "—") + " · " + DATA.claims.length + " claims × seeds " + seeds + " · simulated prices" + (maxCost ? "" : " (unavailable)")));
+  }
+
+  function renderCrash() {
+    els.crash.textContent = "";
+    var crash = DATA.crash || {};
+    var scenarios = crash.scenarios || [];
+    var points = [];
+    scenarios.forEach(function (scenario) {
+      if (points.indexOf(scenario.point) === -1) points.push(scenario.point);
+    });
+
+    var score = el("div", "crash-score");
+    score.appendChild(el("strong", null, crash.crash_safety || "—"));
+    score.appendChild(el("span", null, "scenarios pass"));
+    els.crash.appendChild(score);
+
+    var detail = el("div", "crash-detail");
+    points.forEach(function (point) {
+      var total = scenarios.filter(function (item) { return item.point === point; }).length;
+      var passed = scenarios.filter(function (item) { return item.point === point && item.passed; }).length;
+      var row = el("div", "crash-row");
+      row.appendChild(el("span", "crash-point", point));
+      row.appendChild(el("span", "crash-count", passed + "/" + total));
+      detail.appendChild(row);
+    });
+    if (crash.passed !== undefined && crash.count !== undefined) {
+      detail.appendChild(el("p", "crash-note", crash.passed + " of " + crash.count + " injected-crash scenarios kept at most one refund."));
+    }
+    var failed = scenarios.filter(function (item) { return !item.passed; });
+    failed.forEach(function (item) {
+      detail.appendChild(el("p", "crash-fail", item.id + " · " + item.point + " · " + item.reason));
+    });
+    els.crash.appendChild(detail);
+  }
+
   function render() {
     renderTabs();
     renderClaims();
     renderResult();
     renderDiagram();
     renderSteps();
+    renderCompare();
+    renderCrash();
   }
 
   if (state.claimId) {

@@ -374,6 +374,12 @@ h2 {
 .claim-row.is-selected td { background: var(--ink); color: var(--paper); }
 .claim-row.is-selected .ticket-cell, .claim-row.is-selected .muted { color: #cfc6b2; }
 .claim-row.is-selected .status-pill { background: transparent; }
+.claim-row.is-selected .status-pill.resolved { color: #9fd8ba; border-color: #9fd8ba; }
+.claim-row.is-selected .status-pill.denied,
+.claim-row.is-selected .status-pill.failed { color: #f0a890; border-color: #f0a890; }
+.claim-row.is-selected .status-pill.needs_info,
+.claim-row.is-selected .status-pill.escalated { color: #f0c977; border-color: #f0c977; }
+.claim-row.is-selected .status-pill.unknown { color: #cfc6b2; border-color: #cfc6b2; }
 
 .matrix-cell { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; }
 .claim-row.is-selected .matrix-cell { color: #cfc6b2; }
@@ -556,6 +562,131 @@ h2 {
   color: var(--muted);
 }
 
+/* Compare */
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.compare-card {
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--rule-strong);
+  background: var(--paper);
+  padding: 14px 14px 12px;
+  min-width: 0;
+}
+.compare-card.is-selected { border-top-color: var(--oxide); background: var(--card); }
+
+.compare-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+.compare-letter {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 0.8;
+  color: var(--oxide);
+}
+.compare-title { display: grid; gap: 1px; }
+.compare-title strong { font-size: 12.5px; line-height: 1.2; }
+.compare-selected {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oxide);
+}
+
+.compare-rate { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px; }
+.compare-rate strong { font-family: var(--serif); font-size: 34px; font-weight: 400; line-height: 0.9; }
+.compare-rate span { font-family: var(--mono); font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+
+.metric-bar { margin-bottom: 10px; }
+.metric-bar-head { display: flex; justify-content: space-between; gap: 8px; font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 3px; }
+.metric-value { color: var(--ink-soft); }
+.bar-track { height: 6px; background: var(--paper-deep); border: 1px solid var(--rule); }
+.bar-fill { display: block; height: 100%; }
+.bar-fill.pass { background: var(--green); }
+.bar-fill.cost { background: var(--blue); }
+
+.compare-facts {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 8px;
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px dotted var(--rule-strong);
+  font-size: 10.5px;
+}
+.compare-facts dt { color: var(--muted); }
+.compare-facts dd { margin: 0; font-family: var(--mono); font-size: 10px; text-align: right; }
+
+.compare-note {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.compare-meta {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Crash */
+
+.crash-panel { display: grid; grid-template-columns: minmax(0, 1fr); }
+.crash-card { display: flex; align-items: flex-start; gap: 32px; }
+
+.crash-score {
+  display: grid;
+  gap: 4px;
+  border-right: 1px solid var(--rule);
+  padding-right: 32px;
+  min-width: 150px;
+}
+.crash-score strong {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 0.9;
+  color: var(--green);
+}
+.crash-score span {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.crash-detail { flex: 1; display: grid; gap: 6px; }
+.crash-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  border-bottom: 1px dotted var(--rule);
+  padding-bottom: 5px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+.crash-point { color: var(--ink-soft); }
+.crash-count { color: var(--green); font-weight: 600; }
+.crash-note { margin: 6px 0 0; font-size: 11.5px; color: var(--muted); }
+.crash-fail { margin: 4px 0 0; color: var(--oxide); font-size: 11px; }
+
 /* Responsive */
 
 @media (max-width: 1000px) {
@@ -564,6 +695,9 @@ h2 {
   .masthead-grid { grid-template-columns: 1fr; }
   .dateline { text-align: left; }
   .shape-tabs { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .crash-card { flex-direction: column; gap: 16px; }
+  .crash-score { border-right: 0; border-bottom: 1px solid var(--rule); padding: 0 0 14px; }
 }
 
 @media (max-width: 640px) {
@@ -574,8 +708,31 @@ h2 {
   .panel-head { flex-direction: column; align-items: start; }
   .panel-note { text-align: left; }
   .ticket-cell { max-width: 180px; }
+  .compare-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  html, body { background: #fff; }
+  body { font-size: 11px; }
+  .sheet { max-width: none; padding: 0; }
+  .masthead { border-top-width: 3px; padding-top: 6px; }
+  .masthead-top { padding-bottom: 4px; font-size: 9px; }
+  h1 { font-size: 24px; line-height: 0.95; margin: 4px 0 4px; }
+  .masthead-grid { display: none; }
+  .dek { font-size: 12px; }
+  .shape-tabs, .colophon, .detail-panel, .panel-note, .legend, .step-list { display: none; }
+  main { gap: 10px; padding-top: 10px; }
+  .panel { box-shadow: none; border-color: #bbb; padding: 10px; break-inside: avoid; }
+  .spread { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 10px; }
+  .result-card { position: static; }
+  .diagram svg { min-width: 0; }
+  .claims-table { font-size: 9px; }
+  .claim-row.is-selected td { background: #eee; color: var(--ink); }
+  .compare-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .crash-panel { break-inside: avoid; }
 }
