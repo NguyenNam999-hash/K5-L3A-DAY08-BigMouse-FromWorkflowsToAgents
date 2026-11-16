@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LogiX-VN — Architecture workflows</title>
+  <link rel="stylesheet" href="workflows.css">
+</head>
+<body>
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z"></path>
+      </marker>
+    </defs>
+  </svg>
+
+  <div class="sheet">
+    <header class="masthead">
+      <div class="masthead-top">
+        <span class="kicker">LogiX-VN · Lab 8 · Claim compensation</span>
+        <span class="stamp">Static reference</span>
+      </div>
+      <h1>Four architectures,<br><em>every branch.</em></h1>
+      <div class="masthead-grid">
+        <p class="dek">Each shape handles the same refund claim by a different route. This page shows the whole decision space: every entry branch, every exit, the host write gate they share, and what each outcome does to the ledger and the audit trail. The run-by-run view lives on the <a href="index.html">demo page</a>.</p>
+        <p class="dateline">
+          <span>Scope · conceptual</span><br>
+          <span>Static reference · no claim data</span><br>
+          <span>No network · no scripts</span>
+        </p>
+      </div>
+      <nav class="jump-nav" aria-label="Sections">
+        <a href="#shape-a"><span>A</span> Workflow</a>
+        <a href="#shape-b"><span>B</span> Single ReAct</a>
+        <a href="#shape-c"><span>C</span> Orchestrator</a>
+        <a href="#shape-d"><span>D</span> Swarm reference</a>
+        <a href="#host-gate"><span>H</span> Host write gate</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="shape-section" id="shape-a">
+        <header class="section-head">
+          <p class="eyebrow">Shape A</p>
+          <h2>Deterministic workflow</h2>
+          <p class="section-role">Fixed Python steps. The model may draft reply text but never chooses the amount or writes the ledger.</p>
+        </header>
+        <div class="diagram-scroll"></div>
+        <div class="branch-table"></div>
+      </section>
+
+      <section class="shape-section" id="shape-b">
+        <header class="section-head">
+          <p class="eyebrow">Shape B</p>
+          <h2>Single ReAct agent</h2>
+          <p class="section-role">One bounded reasoning loop, at most eight steps. The agent may call read tools; only the host commits.</p>
+        </header>
+        <div class="diagram-scroll"></div>
+        <div class="branch-table"></div>
+      </section>
+
+      <section class="shape-section" id="shape-c">
+        <header class="section-head">
+          <p class="eyebrow">Shape C</p>
+          <h2>Orchestrator and investigators</h2>
+          <p class="section-role">An allowlist handoff feeds read-only investigators. The orchestrator quotes; investigators cannot write.</p>
+        </header>
+        <div class="diagram-scroll"></div>
+        <div class="branch-table"></div>
+      </section>
+
+      <section class="shape-section" id="shape-d">
+        <header class="section-head">
+          <p class="eyebrow">Shape D</p>
+          <h2>Reference swarm</h2>
+          <p class="section-role">Peers parse the ticket, then read-only investigators quote. One seed in five trusts the ticket delay; that weakness is marked, not hidden.</p>
+        </header>
+        <div class="diagram-scroll"></div>
+        <div class="branch-table"></div>
+      </section>
+
+      <section class="shape-section" id="host-gate">
+        <header class="section-head">
+          <p class="eyebrow">Shared boundary</p>
+          <h2>Host write gate</h2>
+          <p class="section-role">Every positive quote ends here. Approval, ownership, the per-order cap, idempotency, and the crash points are host decisions that model output cannot skip.</p>
+        </header>
+        <div class="diagram-scroll"></div>
+        <div class="branch-table"></div>
+      </section>
+
+      <section class="legend" aria-labelledby="legend-title">
+        <h2 id="legend-title">Legend</h2>
+        <ul>
+          <li><span class="swatch swatch--code" aria-hidden="true"></span>Code step</li>
+          <li><span class="swatch swatch--model" aria-hidden="true"></span>Model step</li>
+          <li><span class="swatch swatch--branch" aria-hidden="true"></span>Decision</li>
+          <li><span class="swatch swatch--host" aria-hidden="true"></span>Host gate</li>
+          <li><span class="swatch swatch--ledger" aria-hidden="true"></span>Ledger write</li>
+          <li><span class="swatch swatch--resolved" aria-hidden="true"></span>resolved</li>
+          <li><span class="swatch swatch--amber" aria-hidden="true"></span>needs_info / escalated</li>
+          <li><span class="swatch swatch--failed" aria-hidden="true"></span>denied / failed</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <span>Host writes the ledger · model reads and drafts</span>
+      <span><a href="index.html">Run-by-run demo</a></span>
+    </footer>
+  </div>
+</body>
+</html>
