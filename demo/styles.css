@@ -409,7 +409,124 @@ h2 {
 
 /* Placeholder areas until the next tasks fill them */
 
-.diagram { min-height: 260px; display: grid; place-items: center; color: var(--muted); }
+.diagram { min-height: 260px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 720px; height: auto; }
+
+.diagram-state {
+  margin: 8px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.step-note { margin: 8px 0 0; font-size: 11.5px; color: var(--muted); font-style: italic; }
+
+.edge { fill: none; stroke: var(--rule-strong); stroke-width: 1.2; }
+.edge-exit { stroke-dasharray: 4 4; }
+.edge-loop { stroke-dasharray: 2 3; }
+
+.node { cursor: pointer; outline: none; }
+
+.node .node-shape {
+  fill: var(--card);
+  stroke: var(--rule-strong);
+  stroke-width: 1.2;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+
+.node text {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.node.state-unvisited .node-shape { fill: var(--paper); stroke-dasharray: 4 3; }
+.node.state-unvisited text { fill: var(--muted); }
+
+.node.state-visited.type-code .node-shape { fill: var(--ink); stroke: var(--ink); }
+.node.state-visited.type-code text { fill: var(--paper); }
+
+.node.state-visited.type-model .node-shape { fill: var(--blue); stroke: var(--blue); }
+.node.state-visited.type-model text { fill: var(--paper); }
+
+.node.state-visited.type-branch .node-shape { fill: var(--amber-soft); stroke: var(--amber); }
+.node.state-visited.type-branch text { fill: var(--amber); }
+
+.node.state-visited.type-host .node-shape { fill: var(--oxide); stroke: var(--oxide); }
+.node.state-visited.type-host text { fill: var(--paper); }
+
+.node.state-visited.type-ledger .node-shape { fill: var(--green-soft); stroke: var(--green); }
+.node.state-visited.type-ledger text { fill: var(--green); }
+
+.node.result-resolved .node-shape { fill: var(--green); stroke: var(--green); }
+.node.result-resolved text { fill: var(--paper); }
+.node.result-denied .node-shape,
+.node.result-failed .node-shape { fill: var(--oxide); stroke: var(--oxide); }
+.node.result-denied text,
+.node.result-failed text { fill: var(--paper); }
+.node.result-needs_info .node-shape,
+.node.result-escalated .node-shape { fill: var(--amber); stroke: var(--amber); }
+.node.result-needs_info text,
+.node.result-escalated text { fill: var(--paper); }
+
+.node:hover .node-shape { stroke: var(--ink); }
+.node:focus-visible .node-shape,
+.node.is-active .node-shape { stroke: var(--oxide); stroke-width: 3; }
+
+.exit-node rect {
+  fill: transparent;
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+.exit-node text {
+  fill: var(--muted);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  border-top: 1px dotted var(--rule-strong);
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.swatch { width: 10px; height: 10px; border: 1px solid var(--rule-strong); display: inline-block; }
+.swatch.type-code { background: var(--ink); border-color: var(--ink); }
+.swatch.type-model { background: var(--blue); border-color: var(--blue); }
+.swatch.type-branch { background: var(--amber-soft); border-color: var(--amber); }
+.swatch.type-host { background: var(--oxide); border-color: var(--oxide); }
+.swatch.type-ledger { background: var(--green-soft); border-color: var(--green); }
+.swatch.type-resolved { background: var(--green); border-color: var(--green); }
+.swatch.type-denied { background: var(--oxide); border-color: var(--oxide); }
+.swatch.type-needs { background: var(--amber); border-color: var(--amber); }
+
+.step-map {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+}
+.step.is-active .step-map { color: #cfc6b2; }
+
 .event-detail { min-height: 40px; color: var(--muted); font-size: 12.5px; }
 .event-detail pre {
   margin: 0;
