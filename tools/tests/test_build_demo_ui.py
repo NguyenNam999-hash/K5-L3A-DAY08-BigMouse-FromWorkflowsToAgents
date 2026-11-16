@@ -13,9 +13,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.build_demo_ui import (  # noqa: E402
+    NODE_IDS,
     RepoPaths,
     assert_no_leaks,
     load_bundle,
+    visited_nodes,
     write_bundle,
 )
 
@@ -132,3 +134,75 @@ def test_render_and_write(tmp_path):
     text = out.read_text(encoding="utf-8")
     assert text.startswith("window.DEMO_DATA = ")
     assert "CANARY_SECRET" not in text
+
+
+def test_workflow_resolved_lights_host_and_ledger():
+    events = [
+        {"kind": "lookup_order", "payload": {"visible": True}},
+        {"kind": "quote", "payload": {"amount_vnd": 35000}},
+    ]
+    got = visited_nodes("workflow", "resolved", events)
+    assert got == [
+        "claim",
+        "order_id",
+        "lookup_order",
+        "visible",
+        "quote",
+        "amount_positive",
+        "host_check",
+        "ledger",
+        "outcome",
+    ]
+
+
+def test_workflow_zero_quote_skips_host_and_ledger():
+    events = [
+        {"kind": "lookup_order", "payload": {"visible": True}},
+        {"kind": "quote", "payload": {"amount_vnd": 0}},
+    ]
+    got = visited_nodes("workflow", "denied", events)
+    assert "host_check" not in got and "ledger" not in got
+    assert got[-1] == "outcome"
+
+
+def test_needs_info_visits_order_branch():
+    got = visited_nodes(
+        "workflow", "needs_info", [{"kind": "decision", "payload": {"status": "needs_info"}}]
+    )
+    assert got == ["claim", "order_id", "outcome"]
+
+
+def test_escalated_visits_order_and_outcome():
+    got = visited_nodes(
+        "orchestrator",
+        "escalated",
+        [
+            {"kind": "handoff", "payload": {}},
+            {"kind": "investigator", "payload": {"lookup_order": {"visible": False}}},
+        ],
+    )
+    assert got == ["claim", "order_id", "handoff", "investigator", "visible", "outcome"]
+
+
+def test_single_not_ready_stops_before_quote():
+    got = visited_nodes(
+        "single", "needs_info", [{"kind": "react", "payload": {"status": "needs_info"}}]
+    )
+    assert got == ["claim", "react", "ready", "outcome"]
+
+
+def test_swarm_override_lights_override_node():
+    events = [
+        {"kind": "handoff", "payload": {}},
+        {"kind": "investigator", "payload": {"lookup_order": {"visible": True}}},
+        {"kind": "model_override", "payload": {"delay_days": 9}},
+        {"kind": "quote", "payload": {"amount_vnd": 150000}},
+    ]
+    got = visited_nodes("swarm", "resolved", events)
+    assert "model_override" in got
+
+
+def test_bundle_trace_has_quote_and_visited(tmp_path):
+    trace = load_bundle(make_paths(tmp_path))["traces"]["R-workflow-C-001-s11"]
+    assert trace["quote_vnd"] == 35000
+    assert trace["visited"][-1] == "outcome"

@@ -46,6 +46,55 @@ FORBIDDEN_MARKERS = (
 )
 PHONE_RE = re.compile(r"\b0\d{9}\b")
 
+NODE_IDS: dict[str, list[str]] = {
+    "workflow": [
+        "claim",
+        "order_id",
+        "lookup_order",
+        "visible",
+        "quote",
+        "amount_positive",
+        "host_check",
+        "ledger",
+        "outcome",
+    ],
+    "single": [
+        "claim",
+        "react",
+        "ready",
+        "quote",
+        "amount_positive",
+        "host_check",
+        "ledger",
+        "outcome",
+    ],
+    "orchestrator": [
+        "claim",
+        "order_id",
+        "handoff",
+        "investigator",
+        "visible",
+        "quote",
+        "amount_positive",
+        "host_check",
+        "ledger",
+        "outcome",
+    ],
+    "swarm": [
+        "claim",
+        "peer_parse",
+        "order_id",
+        "handoff",
+        "investigator",
+        "model_override",
+        "quote",
+        "amount_positive",
+        "host_check",
+        "ledger",
+        "outcome",
+    ],
+}
+
 
 @dataclass(frozen=True)
 class RepoPaths:
@@ -92,6 +141,64 @@ def sanitize_claim(row: dict[str, Any]) -> dict[str, Any]:
     expected = row.get("expected") or {}
     claim["expected"] = {key: expected.get(key) for key in EXPECTED_FIELDS}
     return claim
+
+
+def _ordered(shape: str, visited: set[str]) -> list[str]:
+    return [node_id for node_id in NODE_IDS[shape] if node_id in visited]
+
+
+def visited_nodes(shape: str, status: str, events: list[dict[str, Any]]) -> list[str]:
+    if shape not in NODE_IDS:
+        raise SystemExit(f"unknown shape: {shape}")
+
+    visited = {"claim", "outcome"}
+    if shape == "swarm":
+        visited.add("peer_parse")
+
+    for event in events:
+        kind = event.get("kind")
+        payload = event.get("payload") or {}
+
+        if kind == "decision":
+            visited.add("order_id")
+            if status == "needs_info":
+                return _ordered(shape, visited)
+
+        if kind in ("lookup_order", "react", "handoff", "investigator", "model_override"):
+            visited.add(kind)
+            if kind in ("lookup_order", "handoff", "react") and "order_id" in NODE_IDS[shape]:
+                visited.add("order_id")
+
+        if kind in ("lookup_order", "investigator"):
+            visited.add("visible")
+            if kind == "lookup_order":
+                visible = payload.get("visible")
+            else:
+                visible = (payload.get("lookup_order") or {}).get("visible")
+            if visible is False and status == "escalated":
+                return _ordered(shape, visited)
+
+        if kind == "react":
+            visited.add("ready")
+
+        if kind == "quote":
+            visited.add("quote")
+            visited.add("amount_positive")
+
+    if "quote" not in visited:
+        return _ordered(shape, visited)
+
+    positive_quote = any(
+        int((event.get("payload") or {}).get("amount_vnd") or 0) > 0
+        for event in events
+        if event.get("kind") == "quote"
+    )
+    if status == "resolved":
+        visited.update(("host_check", "ledger"))
+    elif status in ("denied", "failed") and positive_quote:
+        visited.add("host_check")
+
+    return _ordered(shape, visited)
 
 
 def _iter_strings(value: Any):
@@ -144,12 +251,16 @@ def load_bundle(paths: RepoPaths) -> dict[str, Any]:
         run_id = trial["run_id"]
         trace = _load_trace(paths.traces, run_id)
         events = trace.get("events") or []
+        quotes = [event for event in events if event.get("kind") == "quote"]
+        quote_vnd = None
+        if quotes:
+            quote_vnd = int((quotes[-1].get("payload") or {}).get("amount_vnd") or 0)
         traces[run_id] = {
             "run_id": trace.get("run_id", run_id),
             "steps": trace.get("steps", len(events)),
             "events": events,
-            "quote_vnd": None,
-            "visited": [],
+            "quote_vnd": quote_vnd,
+            "visited": visited_nodes(trial.get("shape", ""), trial.get("status", "failed"), events),
         }
 
     return {
