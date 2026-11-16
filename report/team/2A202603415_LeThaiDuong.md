@@ -9,35 +9,58 @@
 
 ## 2. Phần việc phụ trách
 
-- Phụ trách triển khai CP2 cho ba shape `workflow`, `single` và `orchestrator`.
-- Hỗ trợ các yêu cầu CP3 về idempotency, crash recovery và handoff an toàn.
-- Kiểm tra kết quả bằng test student, test host, test handoff/trace và crash suite.
+- Shape được giao: **workflow (A)** — kiến trúc tuần tự, không để model quyết tiền.
+- Dựng khung chung cho ba shape `workflow`, `single`, `orchestrator` trong CP2, sau đó hoàn thiện nhánh workflow trong CP3.
+- Giữ nguyên chữ ký `run_claim(claim_id, *, seed, store_path, crash_at=None) -> RunResult`; mọi nhánh return đi qua `lab8.shapes.common.finish()`.
+- Chuyển tiếp `crash_at` xuống `durability.issue_refund` và để `InjectedCrash` propagate.
+
+### Luồng xử lý workflow
+
+```mermaid
+flowchart TD
+    A[get_claim_view] --> B{claim tồn tại?}
+    B -- không --> F1[failed: unknown_claim]
+    B -- có --> C{có order_id?}
+    C -- không --> F2[needs_info]
+    C -- có --> D[lookup_order theo principal]
+    D --> E{order visible?}
+    E -- không --> F3[escalated]
+    E -- có --> G[compute_compensation trên order row]
+    G --> H{quote > 0?}
+    H -- không --> F4[denied]
+    H -- có --> I[issue_refund với FULL quote + crash_at]
+    I --> J{outcome ok?}
+    J -- conflict --> F5[failed]
+    J -- bị từ chối --> F4
+    J -- ok --> K[resolved + 1 ledger row + 1 audit]
+    I -. InjectedCrash .-> L[trace crash rồi raise]
+```
 
 ## 3. Đóng góp cụ thể
 
-- Hoàn thiện luồng workflow: đọc claim/order qua read tool, tính quote bằng code và gọi host để xử lý refund.
-- Hoàn thiện single-agent ReAct với giới hạn tối đa 8 bước; model chỉ được dùng cho các bước đọc/ra quyết định, không được ghi refund.
-- Hoàn thiện orchestrator và handoff với các tool chỉ đọc; không chuyển secret hoặc dữ liệu ngoài allowlist sang investigator.
-- Bảo đảm mỗi shape gọi `finish()` để trả `RunResult` và ghi trace đúng contract.
-- Chuyển tiếp `crash_at` tới `durability.issue_refund` và để `InjectedCrash` được propagate để kiểm tra resume/idempotency.
-- Commit chính: `27903a0`.
-- Test đã thêm hoặc sửa: không thêm test mới; xác minh bằng `tests/test_public_matrix.py` (T01–T14), `tests/test_trace_contract.py` và `tests/test_handoff_secret.py`.
+- Commit triển khai `27903a0` — `Implement CP2 and CP3 shapes and personal report`: viết ba shape, trong đó workflow là phần hoàn chỉnh nhất.
+- Workflow đọc claim qua `get_claim_view`; thiếu `order_id` trả `needs_info`, order không thấy trả `escalated`, quote 0 trả `denied` và không gọi host.
+- Quote lấy từ `compute_compensation(conn, order_view["order"])`; bỏ qua số ngày trễ ghi trong ticket.
+- Gọi `issue_refund(conn, claim_id, proposal, crash_at=crash_at)` với quote đầy đủ; không tự trừ phần đã hoàn cho claim trước.
+- Trace ghi `error`, `decision`, `lookup_order`, `quote`, `crash`; không ghi claim row thô, ticket, `parent_secret`, header, số điện thoại, địa chỉ, tên hàng hay ghi chú nội bộ.
+- Commit cuối `bf25139` — `Fix personal report filename` (đổi tên báo cáo cá nhân).
+- Test đã thêm hoặc sửa: chưa thêm test mới; xác minh bằng `tests/test_public_matrix.py` (T01–T14), `tests/test_trace_contract.py` và `tests/test_handoff_secret.py`.
 
 ## 4. Bằng chứng
 
-- CP2/student matrix: `248 passed`.
-- Host test: `54 passed, 248 deselected`.
-- T11/T12 retry và crash: `8 passed`.
-- Handoff và trace contract: `9 passed`.
-- Crash suite: `crash_safety = 20/20` trong `src/reports/crash.json`.
-- Run ID benchmark: `R-workflow-C-001-s11` (dữ liệu trong `src/reports/benchmark.json`).
+- Commit: `27903a0` (code), `bf25139` (báo cáo).
+- Shape workflow: pass rate `1.000`, pass^5 `1.000`, seed min–max `1.000–1.000`, variance `0.000000`, cost/success `27.86` VND, mean steps `1.86` (`src/reports/benchmark.json`).
+- Run id dẫn chứng: `R-workflow-C-001-s11`.
+- Crash suite: `crash_safety = 20/20` (`src/reports/crash.json`).
+- Bộ student: `248 passed`; cổng host: `54 passed`.
+- Handoff và trace contract: `9 passed`; T11/T12 retry và crash: `8 passed`.
 
 ## 5. Công cụ AI đã dùng
 
-- Dùng Codex/ChatGPT để đọc contract, gợi ý cấu trúc triển khai và rà soát các nhánh xử lý.
-- Tự kiểm tra kết quả bằng cách đọc source/test, chạy pytest, chạy handoff/trace tests và chạy crash suite.
-- Không dùng AI để bịa số liệu; các số liệu trong báo cáo lấy từ output test thực tế.
+- Dùng Codex/ChatGPT để đọc `docs/contracts.md`, gợi ý cấu trúc triển khai và rà các nhánh return.
+- Tự kiểm tra bằng cách đọc source/test, chạy pytest, chạy crash suite và đọc lại trace.
+- Không dùng AI để bịa số liệu; mọi số trong báo cáo lấy từ output test và report thật.
 
 ## 6. Tự đánh giá
 
-Đã hoàn thành phần triển khai ba shape cho CP2 và hỗ trợ các yêu cầu CP3. Các shape hiện trả đúng `RunResult`, tôn trọng ranh giới host/model, không ghi secret vào trace và vượt qua các kiểm tra retry/crash đã chạy. Phần còn cần hoàn thiện là cập nhật commit hash, run ID benchmark và thông tin liên hệ trước khi nộp.
+Hoàn thành shape workflow và khung chung CP2/CP3. Shape trả đúng `RunResult`, tôn trọng ranh giới host/model, không ghi secret vào trace và vượt qua các kiểm tra retry/crash. Phần cần hoàn thiện: điền email, GitHub và xác nhận commit chốt trước khi nộp.
