@@ -186,8 +186,142 @@
           <h2>Single ReAct agent</h2>
           <p class="section-role">One bounded reasoning loop, at most eight steps. The agent may call read tools; only the host commits.</p>
         </header>
-        <div class="diagram-scroll"></div>
-        <div class="branch-table"></div>
+        <div class="diagram-scroll">
+          <svg class="flow" data-shape="single" viewBox="0 0 1240 560" role="img" aria-labelledby="b-title b-desc">
+            <title id="b-title">Shape B single ReAct agent: bounded loop with every exit branch</title>
+            <desc id="b-desc">A claim enters a ReAct loop that may call read tools for at most eight steps. The loop can end ready, needs_info, escalated, or at the step cap. A positive quote then goes to the shared host write gate; the agent never writes the ledger.</desc>
+
+            <g class="node node--code" transform="translate(20 62)">
+              <rect width="90" height="56"></rect>
+              <text class="node-label" x="45" y="23">claim</text>
+              <text class="node-sub" x="45" y="40">read view</text>
+            </g>
+            <g class="node node--branch" transform="translate(120 52)">
+              <polygon points="55,0 110,38 55,76 0,38"></polygon>
+              <text class="node-label" x="55" y="33">exists?</text>
+              <text class="node-sub" x="55" y="48">claim</text>
+            </g>
+            <g class="node node--model" transform="translate(245 62)">
+              <rect width="150" height="56" rx="12"></rect>
+              <text class="node-label" x="75" y="23">ReAct loop</text>
+              <text class="node-sub" x="75" y="40">max 8 · read tool</text>
+            </g>
+            <g class="node node--branch" transform="translate(410 52)">
+              <polygon points="55,0 110,38 55,76 0,38"></polygon>
+              <text class="node-label" x="55" y="33">final?</text>
+              <text class="node-sub" x="55" y="48">status</text>
+            </g>
+            <g class="node node--code" transform="translate(540 62)">
+              <rect width="100" height="56"></rect>
+              <text class="node-label" x="50" y="23">compute quote</text>
+              <text class="node-sub" x="50" y="40">code, not model</text>
+            </g>
+            <g class="node node--branch" transform="translate(660 52)">
+              <polygon points="55,0 110,38 55,76 0,38"></polygon>
+              <text class="node-label" x="55" y="33">amount?</text>
+              <text class="node-sub" x="55" y="48">&gt; 0</text>
+            </g>
+            <g class="node node--host" transform="translate(790 62)">
+              <rect width="120" height="56"></rect>
+              <rect class="host-inner" x="4" y="4" width="112" height="48"></rect>
+              <text class="node-label" x="60" y="23">host gate</text>
+              <text class="node-sub" x="60" y="40">issue_refund</text>
+            </g>
+
+            <g class="terminal terminal--resolved" transform="translate(1000 52)">
+              <rect width="150" height="38"></rect>
+              <text x="75" y="19">resolved</text>
+            </g>
+            <g class="terminal terminal--denied" transform="translate(1000 112)">
+              <rect width="220" height="44"></rect>
+              <text x="110" y="17">denied · policy_denied</text>
+              <text class="node-sub" x="110" y="32">proposal = full quote</text>
+            </g>
+            <g class="terminal terminal--failed" transform="translate(1000 178)">
+              <rect width="220" height="38"></rect>
+              <text x="110" y="19">failed · amount_conflict</text>
+            </g>
+            <g class="terminal terminal--failed" transform="translate(1000 238)">
+              <rect width="220" height="44" stroke-dasharray="5 4"></rect>
+              <text x="110" y="17">InjectedCrash</text>
+              <text x="110" y="32">retry · one row</text>
+            </g>
+
+            <g class="terminal terminal--failed" transform="translate(60 190)">
+              <rect width="230" height="40"></rect>
+              <text x="115" y="20">failed · unknown_claim</text>
+            </g>
+            <g class="terminal terminal--amber" transform="translate(190 268)">
+              <rect width="220" height="40"></rect>
+              <text x="110" y="20">needs_info · no order_id</text>
+            </g>
+            <g class="terminal terminal--amber" transform="translate(190 346)">
+              <rect width="220" height="40"></rect>
+              <text x="110" y="20">escalated · order hidden</text>
+            </g>
+            <g class="terminal terminal--failed" transform="translate(190 424)">
+              <rect width="220" height="40"></rect>
+              <text x="110" y="20">failed · step_cap</text>
+            </g>
+            <g class="terminal terminal--denied" transform="translate(590 454)">
+              <rect width="250" height="40"></rect>
+              <text x="125" y="20">denied · zero quote</text>
+            </g>
+
+            <path class="edge" d="M110 90 L120 90"></path>
+            <path class="edge" d="M230 90 L245 90"></path>
+            <path class="edge" d="M395 90 L410 90"></path>
+            <path class="edge" d="M520 90 L540 90"></path>
+            <path class="edge" d="M640 90 L660 90"></path>
+            <path class="edge" d="M770 90 L790 90"></path>
+
+            <path class="edge" d="M175 128 L175 186"></path>
+            <path class="edge" d="M465 128 L300 264"></path>
+            <path class="edge" d="M465 128 L400 342"></path>
+            <path class="edge" d="M465 128 L300 420"></path>
+            <path class="edge" d="M715 128 L715 450"></path>
+
+            <path class="edge" d="M310 62 C310 28 390 28 390 62"></path>
+            <path class="edge" d="M910 72 L1000 71"></path>
+            <path class="edge" d="M910 88 L1000 134"></path>
+            <path class="edge" d="M910 100 L1000 197"></path>
+            <path class="edge edge--weak" d="M910 110 L1000 260"></path>
+
+            <text class="edge-label" x="318" y="25">decide → read tool</text>
+            <text class="edge-label" x="175" y="160">no</text>
+            <text class="edge-label" x="392" y="244">needs_info</text>
+            <text class="edge-label" x="442" y="322">escalated</text>
+            <text class="edge-label" x="378" y="416">step_cap</text>
+            <text class="edge-label" x="715" y="424">zero</text>
+            <text class="edge-label" x="532" y="82">ready</text>
+            <text class="edge-label" x="968" y="64">ok</text>
+            <text class="edge-label" x="966" y="118">refused</text>
+            <text class="edge-label" x="964" y="188">conflict</text>
+            <text class="edge-label edge-label--weak" x="962" y="248">crash</text>
+            <text class="note-text" x="20" y="540">The agent never calls issue_refund. The loop is bounded: eight steps without a final answer ends in failed · step_cap.</text>
+          </svg>
+        </div>
+        <div class="branch-table">
+          <table>
+            <caption>Shape B — branch outcomes</caption>
+            <thead>
+              <tr><th scope="col">Condition</th><th scope="col">Status</th><th scope="col">Proposal</th><th scope="col">Ledger</th><th scope="col">Audit / note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Claim id not found</td><td><span class="status status--failed">failed</span></td><td>0</td><td>none</td><td><code>unknown_claim</code>; loop never starts</td></tr>
+              <tr><td>Agent returns <code>needs_info</code> because <code>order_id</code> is missing</td><td><span class="status status--needs_info">needs_info</span></td><td>0</td><td>none</td><td><code>missing_order_id</code></td></tr>
+              <tr><td>Agent returns <code>escalated</code> because the order is hidden</td><td><span class="status status--escalated">escalated</span></td><td>0</td><td>none</td><td><code>not_found</code> or <code>outside_principal_scope</code></td></tr>
+              <tr><td>Eight ReAct steps pass without a final answer</td><td><span class="status status--failed">failed</span></td><td>0</td><td>none</td><td><code>step_cap</code>; no quote, no host call</td></tr>
+              <tr><td>Quote is zero</td><td><span class="status status--denied">denied</span></td><td>0</td><td>none</td><td>Reason from quote; no host audit</td></tr>
+              <tr><td>Positive quote, host accepts</td><td><span class="status status--resolved">resolved</span></td><td>full quote</td><td>one row; amount capped by host</td><td><code>refund_committed</code></td></tr>
+              <tr><td>Positive quote, host refuses approval or cap</td><td><span class="status status--denied">denied</span></td><td>full quote</td><td>none</td><td><code>policy_denied</code></td></tr>
+              <tr><td>Retry proposes a different amount</td><td><span class="status status--failed">failed</span></td><td>quote</td><td>old row kept</td><td><code>amount_conflict</code></td></tr>
+              <tr><td>Crash before the effect</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>no row</td><td><code>InjectedCrash</code>; retry starts the write</td></tr>
+              <tr><td>Crash after the effect, before checkpoint</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>row committed</td><td><code>refund_committed</code>; retry replays idempotently</td></tr>
+              <tr><td>Crash after checkpoint</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>row committed</td><td><code>refund_committed</code>; retry replays idempotently</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section class="shape-section" id="shape-c">
