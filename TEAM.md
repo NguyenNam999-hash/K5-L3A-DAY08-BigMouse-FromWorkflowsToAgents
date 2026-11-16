@@ -13,7 +13,7 @@ Thông tin cá nhân và vai trò để trống theo yêu cầu. Bằng chứng 
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 |        |      |       |        |         |
+|   1 | Vũ Văn Hào | 2A202603419 | haovu1663@gmail.com | haovu1663-cryto | CP4 Durability & Security Lead |
 |   2 |        |      |       |        |         |
 
 Gợi ý chia vai:
@@ -27,7 +27,7 @@ Gợi ý chia vai:
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| | | | |
+| Vũ Văn Hào | CP4 Durability & Security Lead | pending | tests/test_cp4_durability_and_secrets.py |
 
 ## Cá nhân
 
@@ -41,16 +41,19 @@ Ví dụ: `report/team/20241234_NguyenVanAn.md`.
 
 Sao chép mục dưới đây cho từng thành viên.
 
-## MSSV_HoTen
+## 2A202603419_VuVanHao
 
 ### Phần việc phụ trách
 
--
+- Phụ trách Checkpoint 4 (CP4): Crash Safety, Durability, Approval Binding & Security Audit.
 
 ### Đóng góp cụ thể
 
--
+- Chạy kiểm định bộ crash suite 20 kịch bản và xuất báo cáo `src/reports/crash.json` đạt tuyệt đối 20/20.
+- Viết bộ test kiểm thử bảo mật độc lập `src/tests/test_cp4_durability_and_secrets.py` (idempotency khi crash, chặn giả mạo approval, lọc sạch canary secret).
 
 ### Bằng chứng
 
--
+- File báo cáo crash: `src/reports/crash.json` (20/20).
+- File test cá nhân: `src/tests/test_cp4_durability_and_secrets.py` (4/4 passed).
+- Báo cáo cá nhân: `report/team/2A202603419_vuvanhao.md`.
