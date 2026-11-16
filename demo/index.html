@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LogiX-VN — One task, four architectures</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sheet">
+    <header class="masthead">
+      <div class="masthead-top">
+        <span class="kicker">LogiX-VN · Lab 8 · Claim compensation</span>
+        <span class="stamp">Read-only demo</span>
+      </div>
+      <h1>One task,<br><em>four architectures.</em></h1>
+      <div class="masthead-grid">
+        <p class="dek">The same refund claim, handled by a fixed workflow, a single ReAct agent, an orchestrator with read-only investigators, and the reference swarm. Money and the ledger stay in host code. The model reads and drafts only.</p>
+        <p class="dateline">
+          <span id="dateline-asof">as of —</span><br>
+          <span id="dateline-counts">— claims · — trials</span><br>
+          MockLLM · no network
+        </p>
+      </div>
+      <nav id="shape-tabs" class="shape-tabs" role="tablist" aria-label="Architecture"></nav>
+    </header>
+
+    <main>
+      <section class="spread" aria-label="Selected run">
+        <section class="panel diagram-panel" aria-labelledby="pipeline-title">
+          <header class="panel-head">
+            <div>
+              <p class="eyebrow">Execution flow</p>
+              <h2 id="pipeline-title">Pipeline</h2>
+            </div>
+            <p id="diagram-note" class="panel-note"></p>
+          </header>
+          <div id="diagram" class="diagram" role="group" aria-label="Pipeline diagram"></div>
+          <div id="step-list" class="step-list" aria-label="Trace events"></div>
+        </section>
+
+        <aside id="result-card" class="panel result-card" aria-live="polite"></aside>
+      </section>
+
+      <section class="panel claims-panel" aria-labelledby="claims-title">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">Public matrix T01–T14</p>
+            <h2 id="claims-title">Claims</h2>
+          </div>
+          <p class="panel-note">Five seeds per claim. Select a row or a seed to inspect that run.</p>
+        </header>
+        <div class="table-scroll">
+          <table class="claims-table">
+            <thead>
+              <tr>
+                <th scope="col">Test</th>
+                <th scope="col">Claim</th>
+                <th scope="col">Ticket</th>
+                <th scope="col">Expected</th>
+                <th scope="col">Refund expected</th>
+                <th scope="col">Seeds</th>
+                <th scope="col">Run status</th>
+              </tr>
+            </thead>
+            <tbody id="claim-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="compare-title">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">Same claims, seeds, price table</p>
+            <h2 id="compare-title">Architecture comparison</h2>
+          </div>
+          <p class="panel-note">Simulated prices, not real API cost. Latency unavailable offline.</p>
+        </header>
+        <div id="compare" class="compare"></div>
+      </section>
+
+      <section class="panel crash-panel" aria-labelledby="crash-title">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">Retry after injected crash</p>
+            <h2 id="crash-title">Crash safety</h2>
+          </div>
+        </header>
+        <div id="crash-card" class="crash-card"></div>
+      </section>
+
+      <section class="panel detail-panel" aria-labelledby="event-title">
+        <header class="panel-head">
+          <div>
+            <p class="eyebrow">Trace contract v1</p>
+            <h2 id="event-title">Event detail</h2>
+          </div>
+          <p class="panel-note">Traces are sanitized; secrets and PII are outside the contract.</p>
+        </header>
+        <div id="event-detail" class="event-detail"></div>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <span id="built-from">Generated from existing evidence.</span>
+      <span>Host writes the ledger · model reads and drafts</span>
+    </footer>
+  </div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

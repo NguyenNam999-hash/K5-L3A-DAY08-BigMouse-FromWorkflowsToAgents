@@ -17,19 +17,20 @@ Phần này nối tiếp phần mini research ở buổi lý thuyết (slide 62�
 
 | Field | Hướng dẫn | Nhóm điền |
 | --- | --- | --- |
-| CÂU | R1 / R2 / R3 / R4 | |
-| SOURCE | Paper/blog, năm, URL, loại bằng chứng (benchmark, production report, blog kinh nghiệm) | |
-| CLAIM | Một kết luận gốc của nguồn. Không viết rộng hơn phạm vi paper | |
-| BOUNDARY | Model / dataset / setup giới hạn kết luận đó | |
-| HYPOTHESIS | Nếu đổi shape A→B (hoặc bật/tắt một thành phần), metric X sẽ đổi theo hướng nào, khoảng bao nhiêu | |
-| METHOD | Biến giữ cố định: model, tools, seed, corpus, giá, evaluator. Biến duy nhất được thay đổi: … | |
-| FAILURE / METRIC | Một lỗi dự kiến và cách đo nó: pass rate, pass^5, variance, cost/success, leak, bypass | |
+| CÂU | R1 / R2 / R3 / R4 | R3 |
+| SOURCE | Paper/blog, năm, URL, loại bằng chứng (benchmark, production report, blog kinh nghiệm) | AgentArch, AACL 2026; bài benchmark kiến trúc agent, dùng làm khung so topology |
+| CLAIM | Một kết luận gốc của nguồn. Không viết rộng hơn phạm vi paper | Chọn topology là một quyết định kiến trúc riêng, nên so sánh chỉ có nghĩa khi model, tool, dữ liệu và cách đo được giữ cố định |
+| BOUNDARY | Model / dataset / setup giới hạn kết luận đó | Kết luận của paper gắn với benchmark và model của paper; lab này chỉ kiểm tra lại trên MockLLM, 14 claim public và 5 seed |
+| HYPOTHESIS | Nếu đổi shape A→B (hoặc bật/tắt một thành phần), metric X sẽ đổi theo hướng nào, khoảng bao nhiêu | Đổi A workflow sang C orchestrator, giữ nguyên mọi thứ khác, pass rate giữ 1.000 nhưng cost/success tăng khoảng 60–70% và số bước tăng |
+| METHOD | Biến giữ cố định: model, tools, seed, corpus, giá, evaluator. Biến duy nhất được thay đổi: … | Cố định MockLLM, read-only tool allowlist, seed 11/22/33/44/55, 14 claim public, bảng giá mô phỏng và `trial_pass`; biến duy nhất là shape A/B/C/D |
+| FAILURE / METRIC | Một lỗi dự kiến và cách đo nó: pass rate, pass^5, variance, cost/success, leak, bypass | Dự kiến thêm tầng agent làm tăng cost và steps mà không tăng pass; đo pass rate, pass^5, seed variance, cost/success, mean/p95 steps trong `src/reports/benchmark.json` |
 
 ## Kết quả ablation
 
 - Lệnh đã chạy (copy nguyên văn):
-- Run id / file report:
-- Kết quả so với hypothesis (đúng / sai / không kết luận được), kèm số liệu:
+  `python -m lab8.benchmark --shapes workflow,single,orchestrator,swarm --cases data/public_claims.jsonl --seeds 11,22,33,44,55 --out reports/benchmark.json`
+- Run id / file report: `R-workflow-C-001-s11`; `src/reports/benchmark.json`
+- Kết quả so với hypothesis (đúng / sai / không kết luận được), kèm số liệu: Đúng một phần. Pass rate của A/B/C đều `1.000` và pass^5 `1.000`, nên thêm agent không tăng độ chính xác. Cost/success tăng từ `27.86` (A) lên `32.65` (B) và `46.43` (C), tức C tăng khoảng 67% so với A; mean steps tăng từ `1.86` lên `2.79`. Swarm (D) thấp hơn: pass `0.986`, pass^5 `0.929`, variance `0.000816`, cost/success `49.57`; seed 55 chỉ đạt `0.929` vì C-002 bị trả tiền sai do `REFERENCE_WEAKNESS` tin ticket. Variance của A/B/C đều `0.000000`.
 - Giới hạn: MockLLM không phải model sản xuất, latency là `unavailable`.
 
 Muốn đi xa hơn một ablation để lấy điểm cộng thì xem [docs/bonus_topics.md](../../docs/bonus_topics.md).

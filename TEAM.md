@@ -29,7 +29,10 @@ Gợi ý chia vai:
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| | | | |
+| Nguyễn Lê Hải Nam | Tài liệu nhóm | `4d4c6d8` feat: TEAM.md | chưa có test mới trong lịch sử |
+| Lê Thái Dương | CP2 + CP3: ba shape workflow, single, orchestrator | `27903a0` Implement CP2 and CP3 shapes and personal report | xác minh bằng `tests/test_public_matrix.py` (T01–T14), `tests/test_trace_contract.py`, `tests/test_handoff_secret.py`; chưa thêm test mới |
+| Nguyễn Triều Dương | CP1: setup và ghi chú contract | `6faf794` docs: record CP1 setup verification and contract review | chưa có test mới trong lịch sử |
+| Vũ Văn Hào | chưa ghi nhận | chưa có commit trong lịch sử nhánh | chưa có |
 
 ## Cá nhân
 
