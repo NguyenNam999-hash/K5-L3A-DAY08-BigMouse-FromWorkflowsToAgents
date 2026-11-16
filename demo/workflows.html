@@ -478,8 +478,161 @@
           <h2>Reference swarm</h2>
           <p class="section-role">Peers parse the ticket, then read-only investigators quote. One seed in five trusts the ticket delay; that weakness is marked, not hidden.</p>
         </header>
-        <div class="diagram-scroll"></div>
-        <div class="branch-table"></div>
+        <div class="diagram-scroll">
+          <svg class="flow" data-shape="swarm" viewBox="0 0 1300 600" role="img" aria-labelledby="d-title d-desc">
+            <title id="d-title">Shape D reference swarm: peer parsing, investigators, and the ticket-delay override branch</title>
+            <desc id="d-desc">A claim enters peer and parse model calls, then an allowlist handoff and read-only investigators. When seed modulo five is zero and the ticket delay disagrees with the order row, the swarm rewrites delay_days and recomputes the quote. The shared host gate still blocks every invalid write.</desc>
+
+            <g class="node node--code" transform="translate(20 62)">
+              <rect width="70" height="56"></rect>
+              <text class="node-label" x="35" y="23">claim</text>
+              <text class="node-sub" x="35" y="40">read view</text>
+            </g>
+            <g class="node node--branch" transform="translate(100 52)">
+              <polygon points="45,0 90,38 45,76 0,38"></polygon>
+              <text class="node-label" x="45" y="33">exists?</text>
+              <text class="node-sub" x="45" y="48">claim</text>
+            </g>
+            <g class="node node--model" transform="translate(200 62)">
+              <rect width="110" height="56" rx="12"></rect>
+              <text class="node-label" x="55" y="23">peer + parse</text>
+              <text class="node-sub" x="55" y="40">model calls</text>
+            </g>
+            <g class="node node--branch" transform="translate(320 52)">
+              <polygon points="45,0 90,38 45,76 0,38"></polygon>
+              <text class="node-label" x="45" y="33">order?</text>
+              <text class="node-sub" x="45" y="48">id present</text>
+            </g>
+            <g class="node node--code" transform="translate(420 62)">
+              <rect width="80" height="56"></rect>
+              <text class="node-label" x="40" y="23">handoff</text>
+              <text class="node-sub" x="40" y="40">allowlist</text>
+            </g>
+            <g class="node node--model" transform="translate(510 62)">
+              <rect width="110" height="56" rx="12"></rect>
+              <text class="node-label" x="55" y="23">investigators</text>
+              <text class="node-sub" x="55" y="40">read-only</text>
+            </g>
+            <g class="node node--branch" transform="translate(630 52)">
+              <polygon points="45,0 90,38 45,76 0,38"></polygon>
+              <text class="node-label" x="45" y="33">override?</text>
+              <text class="node-sub" x="45" y="48">delay</text>
+            </g>
+            <g class="node node--code" transform="translate(730 62)">
+              <rect width="80" height="56"></rect>
+              <text class="node-label" x="40" y="23">quote</text>
+              <text class="node-sub" x="40" y="40">compute</text>
+            </g>
+            <g class="node node--branch" transform="translate(820 52)">
+              <polygon points="45,0 90,38 45,76 0,38"></polygon>
+              <text class="node-label" x="45" y="33">amount?</text>
+              <text class="node-sub" x="45" y="48">&gt; 0</text>
+            </g>
+            <g class="node node--host" transform="translate(920 62)">
+              <rect width="100" height="56"></rect>
+              <rect class="host-inner" x="4" y="4" width="92" height="48"></rect>
+              <text class="node-label" x="50" y="23">host gate</text>
+              <text class="node-sub" x="50" y="40">issue_refund</text>
+            </g>
+
+            <g class="terminal terminal--resolved" transform="translate(1060 52)">
+              <rect width="220" height="38"></rect>
+              <text x="110" y="19">resolved</text>
+            </g>
+            <g class="terminal terminal--denied" transform="translate(1060 112)">
+              <rect width="220" height="44"></rect>
+              <text x="110" y="17">denied · policy_denied</text>
+              <text class="node-sub" x="110" y="32">proposal = full quote</text>
+            </g>
+            <g class="terminal terminal--failed" transform="translate(1060 178)">
+              <rect width="220" height="38"></rect>
+              <text x="110" y="19">failed · amount_conflict</text>
+            </g>
+            <g class="terminal terminal--failed" transform="translate(1060 238)">
+              <rect width="220" height="44" stroke-dasharray="5 4"></rect>
+              <text x="110" y="17">InjectedCrash</text>
+              <text x="110" y="32">retry · one row</text>
+            </g>
+
+            <g class="terminal terminal--failed" transform="translate(30 190)">
+              <rect width="230" height="40"></rect>
+              <text x="115" y="20">failed · unknown_claim</text>
+            </g>
+            <g class="terminal terminal--amber" transform="translate(255 278)">
+              <rect width="220" height="40"></rect>
+              <text x="110" y="20">needs_info · no order_id</text>
+            </g>
+            <g class="terminal terminal--amber" transform="translate(440 366)">
+              <rect width="250" height="40"></rect>
+              <text x="125" y="20">escalated · hidden order</text>
+            </g>
+            <g class="terminal terminal--denied" transform="translate(740 454)">
+              <rect width="250" height="40"></rect>
+              <text x="125" y="20">denied · zero quote</text>
+            </g>
+
+            <g class="badge" transform="translate(600 206)">
+              <rect width="150" height="22"></rect>
+              <text x="75" y="11">REFERENCE WEAKNESS</text>
+            </g>
+
+            <path class="edge" d="M90 90 L100 90"></path>
+            <path class="edge" d="M190 90 L200 90"></path>
+            <path class="edge" d="M310 90 L320 90"></path>
+            <path class="edge" d="M410 90 L420 90"></path>
+            <path class="edge" d="M500 90 L510 90"></path>
+            <path class="edge" d="M620 90 L630 90"></path>
+            <path class="edge" d="M720 90 L730 90"></path>
+            <path class="edge" d="M810 90 L820 90"></path>
+            <path class="edge" d="M910 90 L920 90"></path>
+
+            <path class="edge" d="M145 128 L145 186"></path>
+            <path class="edge" d="M365 128 L365 274"></path>
+            <path class="edge" d="M565 128 L565 362"></path>
+            <path class="edge" d="M865 128 L865 450"></path>
+
+            <path class="edge edge--weak" d="M675 128 L675 190 L770 190 L770 118"></path>
+            <path class="edge" d="M1020 72 L1060 71"></path>
+            <path class="edge" d="M1020 88 L1060 134"></path>
+            <path class="edge" d="M1020 100 L1060 197"></path>
+            <path class="edge edge--weak" d="M1020 110 L1060 260"></path>
+
+            <text class="edge-label" x="145" y="160">no</text>
+            <text class="edge-label" x="365" y="244">no</text>
+            <text class="edge-label" x="565" y="334">hidden</text>
+            <text class="edge-label" x="865" y="424">zero</text>
+            <text class="edge-label" x="725" y="82">no</text>
+            <text class="edge-label edge-label--weak" x="735" y="180">yes: seed % 5 == 0</text>
+            <text class="edge-label edge-label--weak" x="735" y="194">ticket delay ≠ delay_days</text>
+            <text class="edge-label" x="1040" y="64">ok</text>
+            <text class="edge-label" x="1038" y="118">refused</text>
+            <text class="edge-label" x="1036" y="188">conflict</text>
+            <text class="edge-label edge-label--weak" x="1034" y="248">crash</text>
+            <text class="note-text" x="20" y="580">model_override is traced when the weakness fires. The host still blocks writes that fail approval, ownership, or idempotency.</text>
+          </svg>
+        </div>
+        <div class="branch-table">
+          <table>
+            <caption>Shape D — branch outcomes</caption>
+            <thead>
+              <tr><th scope="col">Condition</th><th scope="col">Status</th><th scope="col">Proposal</th><th scope="col">Ledger</th><th scope="col">Audit / note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Claim id not found</td><td><span class="status status--failed">failed</span></td><td>0</td><td>none</td><td><code>unknown_claim</code>; no peer call</td></tr>
+              <tr><td><code>order_id</code> missing</td><td><span class="status status--needs_info">needs_info</span></td><td>0</td><td>none</td><td><code>missing_order_id</code>; draft call only</td></tr>
+              <tr><td>Order hidden from the principal</td><td><span class="status status--escalated">escalated</span></td><td>0</td><td>none</td><td><code>not_found</code> or <code>outside_principal_scope</code></td></tr>
+              <tr><td>Quote is zero</td><td><span class="status status--denied">denied</span></td><td>0</td><td>none</td><td>Reason from quote; no host audit</td></tr>
+              <tr><td>Override branch: <code>seed % 5 == 0</code> and the ticket delay does not match the order row</td><td>no status by itself</td><td>quote from rewritten delay</td><td>unchanged until host gate</td><td><code>model_override</code> trace event; this is the reference weakness</td></tr>
+              <tr><td>Positive quote, host accepts</td><td><span class="status status--resolved">resolved</span></td><td>full quote</td><td>one row; amount capped by host</td><td><code>refund_committed</code></td></tr>
+              <tr><td>Positive quote, host refuses approval or cap</td><td><span class="status status--denied">denied</span></td><td>full quote</td><td>none</td><td><code>policy_denied</code></td></tr>
+              <tr><td>Retry proposes a different amount</td><td><span class="status status--failed">failed</span></td><td>quote</td><td>old row kept</td><td><code>amount_conflict</code></td></tr>
+              <tr><td>Crash before the effect</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>no row</td><td><code>InjectedCrash</code>; retry starts the write</td></tr>
+              <tr><td>Crash after the effect, before checkpoint</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>row committed</td><td><code>refund_committed</code>; retry replays idempotently</td></tr>
+              <tr><td>Crash after checkpoint</td><td><span class="status status--failed">no result</span></td><td>quote</td><td>row committed</td><td><code>refund_committed</code>; retry replays idempotently</td></tr>
+              <tr><td>Host still gates every write</td><td>n/a</td><td>full quote</td><td>host decides</td><td>The swarm weakness changes the quote source, never approval, ownership, or idempotency</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section class="shape-section" id="host-gate">
