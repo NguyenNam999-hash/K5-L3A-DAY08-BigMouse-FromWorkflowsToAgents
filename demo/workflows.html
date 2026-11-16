@@ -211,17 +211,17 @@
               <text class="node-label" x="55" y="33">final?</text>
               <text class="node-sub" x="55" y="48">status</text>
             </g>
-            <g class="node node--code" transform="translate(540 62)">
+            <g class="node node--code" transform="translate(550 62)">
               <rect width="100" height="56"></rect>
               <text class="node-label" x="50" y="23">compute quote</text>
               <text class="node-sub" x="50" y="40">code, not model</text>
             </g>
-            <g class="node node--branch" transform="translate(660 52)">
+            <g class="node node--branch" transform="translate(665 52)">
               <polygon points="55,0 110,38 55,76 0,38"></polygon>
               <text class="node-label" x="55" y="33">amount?</text>
               <text class="node-sub" x="55" y="48">&gt; 0</text>
             </g>
-            <g class="node node--host" transform="translate(790 62)">
+            <g class="node node--host" transform="translate(795 62)">
               <rect width="120" height="56"></rect>
               <rect class="host-inner" x="4" y="4" width="112" height="48"></rect>
               <text class="node-label" x="60" y="23">host gate</text>
@@ -263,7 +263,7 @@
               <rect width="220" height="40"></rect>
               <text x="110" y="20">failed · step_cap</text>
             </g>
-            <g class="terminal terminal--denied" transform="translate(590 454)">
+            <g class="terminal terminal--denied" transform="translate(595 454)">
               <rect width="250" height="40"></rect>
               <text x="125" y="20">denied · zero quote</text>
             </g>
@@ -271,29 +271,29 @@
             <path class="edge" d="M110 90 L120 90"></path>
             <path class="edge" d="M230 90 L245 90"></path>
             <path class="edge" d="M395 90 L410 90"></path>
-            <path class="edge" d="M520 90 L540 90"></path>
-            <path class="edge" d="M640 90 L660 90"></path>
-            <path class="edge" d="M770 90 L790 90"></path>
+            <path class="edge" d="M520 90 L550 90"></path>
+            <path class="edge" d="M650 90 L665 90"></path>
+            <path class="edge" d="M775 90 L795 90"></path>
 
             <path class="edge" d="M175 128 L175 186"></path>
-            <path class="edge" d="M465 128 L300 264"></path>
-            <path class="edge" d="M465 128 L400 342"></path>
-            <path class="edge" d="M465 128 L300 420"></path>
-            <path class="edge" d="M715 128 L715 450"></path>
+            <path class="edge" d="M465 128 L465 150 L435 150 L435 288 L410 288"></path>
+            <path class="edge" d="M435 190 L435 366 L410 366"></path>
+            <path class="edge" d="M435 240 L435 444 L410 444"></path>
+            <path class="edge" d="M720 128 L720 450"></path>
 
             <path class="edge" d="M310 62 C310 28 390 28 390 62"></path>
-            <path class="edge" d="M910 72 L1000 71"></path>
-            <path class="edge" d="M910 88 L1000 134"></path>
-            <path class="edge" d="M910 100 L1000 197"></path>
-            <path class="edge edge--weak" d="M910 110 L1000 260"></path>
+            <path class="edge" d="M915 72 L1000 71"></path>
+            <path class="edge" d="M915 88 L1000 134"></path>
+            <path class="edge" d="M915 100 L1000 197"></path>
+            <path class="edge edge--weak" d="M915 110 L1000 260"></path>
 
             <text class="edge-label" x="318" y="25">decide → read tool</text>
             <text class="edge-label" x="175" y="160">no</text>
-            <text class="edge-label" x="392" y="244">needs_info</text>
-            <text class="edge-label" x="442" y="322">escalated</text>
-            <text class="edge-label" x="378" y="416">step_cap</text>
-            <text class="edge-label" x="715" y="424">zero</text>
-            <text class="edge-label" x="532" y="82">ready</text>
+            <text class="edge-label edge-label--start" x="445" y="282">needs_info</text>
+            <text class="edge-label edge-label--start" x="445" y="360">escalated</text>
+            <text class="edge-label edge-label--start" x="445" y="438">step_cap</text>
+            <text class="edge-label" x="720" y="424">zero</text>
+            <text class="edge-label" x="535" y="82">ready</text>
             <text class="edge-label" x="968" y="64">ok</text>
             <text class="edge-label" x="966" y="118">refused</text>
             <text class="edge-label" x="964" y="188">conflict</text>
@@ -382,23 +382,23 @@
               <text class="node-sub" x="50" y="40">issue_refund</text>
             </g>
 
-            <g class="terminal terminal--resolved" transform="translate(960 52)">
+            <g class="terminal terminal--resolved" transform="translate(1000 52)">
               <rect width="150" height="38"></rect>
               <text x="75" y="19">resolved</text>
             </g>
-            <g class="terminal terminal--denied" transform="translate(960 112)">
-              <rect width="250" height="44"></rect>
-              <text x="125" y="17">denied · policy_denied</text>
-              <text class="node-sub" x="125" y="32">proposal = full quote</text>
+            <g class="terminal terminal--denied" transform="translate(1000 112)">
+              <rect width="230" height="44"></rect>
+              <text x="115" y="17">denied · policy_denied</text>
+              <text class="node-sub" x="115" y="32">proposal = full quote</text>
             </g>
-            <g class="terminal terminal--failed" transform="translate(960 178)">
-              <rect width="250" height="38"></rect>
-              <text x="125" y="19">failed · amount_conflict</text>
+            <g class="terminal terminal--failed" transform="translate(1000 178)">
+              <rect width="230" height="38"></rect>
+              <text x="115" y="19">failed · amount_conflict</text>
             </g>
-            <g class="terminal terminal--failed" transform="translate(960 238)">
-              <rect width="250" height="44" stroke-dasharray="5 4"></rect>
-              <text x="125" y="17">InjectedCrash</text>
-              <text x="125" y="32">retry · one row</text>
+            <g class="terminal terminal--failed" transform="translate(1000 238)">
+              <rect width="230" height="44" stroke-dasharray="5 4"></rect>
+              <text x="115" y="17">InjectedCrash</text>
+              <text x="115" y="32">retry · one row</text>
             </g>
 
             <g class="terminal terminal--failed" transform="translate(40 190)">
@@ -410,12 +410,12 @@
               <text x="110" y="20">needs_info · no order_id</text>
             </g>
             <g class="terminal terminal--amber" transform="translate(460 366)">
-              <rect width="250" height="40"></rect>
-              <text x="125" y="20">escalated · hidden order</text>
+              <rect width="230" height="40"></rect>
+              <text x="115" y="20">escalated · hidden order</text>
             </g>
             <g class="terminal terminal--denied" transform="translate(660 454)">
-              <rect width="250" height="40"></rect>
-              <text x="125" y="20">denied · zero quote</text>
+              <rect width="230" height="40"></rect>
+              <text x="115" y="20">denied · zero quote</text>
             </g>
 
             <path class="edge" d="M100 90 L110 90"></path>
@@ -432,19 +432,19 @@
             <path class="edge" d="M585 128 L585 362"></path>
             <path class="edge" d="M785 128 L785 450"></path>
 
-            <path class="edge" d="M940 72 L960 71"></path>
-            <path class="edge" d="M940 88 L960 134"></path>
-            <path class="edge" d="M940 100 L960 197"></path>
-            <path class="edge edge--weak" d="M940 110 L960 260"></path>
+            <path class="edge" d="M940 72 L1000 71"></path>
+            <path class="edge" d="M940 88 L1000 134"></path>
+            <path class="edge" d="M940 100 L1000 197"></path>
+            <path class="edge edge--weak" d="M940 110 L1000 260"></path>
 
             <text class="edge-label" x="155" y="160">no</text>
             <text class="edge-label" x="255" y="244">no</text>
             <text class="edge-label" x="585" y="334">hidden</text>
             <text class="edge-label" x="785" y="424">zero</text>
-            <text class="edge-label" x="930" y="64">ok</text>
-            <text class="edge-label" x="928" y="118">refused</text>
-            <text class="edge-label" x="926" y="188">conflict</text>
-            <text class="edge-label edge-label--weak" x="924" y="248">crash</text>
+            <text class="edge-label" x="970" y="64">ok</text>
+            <text class="edge-label" x="970" y="118">refused</text>
+            <text class="edge-label" x="970" y="188">conflict</text>
+            <text class="edge-label edge-label--weak" x="970" y="248">crash</text>
             <text class="note-text" x="20" y="540">Handoff carries allowlisted facts only. Investigators run lookup_order, lookup_policy, and compute_compensation; there is no write tool in their registry.</text>
           </svg>
         </div>
@@ -535,23 +535,23 @@
               <text class="node-sub" x="50" y="40">issue_refund</text>
             </g>
 
-            <g class="terminal terminal--resolved" transform="translate(1060 52)">
-              <rect width="220" height="38"></rect>
-              <text x="110" y="19">resolved</text>
+            <g class="terminal terminal--resolved" transform="translate(1080 52)">
+              <rect width="210" height="38"></rect>
+              <text x="105" y="19">resolved</text>
             </g>
-            <g class="terminal terminal--denied" transform="translate(1060 112)">
-              <rect width="220" height="44"></rect>
-              <text x="110" y="17">denied · policy_denied</text>
-              <text class="node-sub" x="110" y="32">proposal = full quote</text>
+            <g class="terminal terminal--denied" transform="translate(1080 112)">
+              <rect width="210" height="44"></rect>
+              <text x="105" y="17">denied · policy_denied</text>
+              <text class="node-sub" x="105" y="32">proposal = full quote</text>
             </g>
-            <g class="terminal terminal--failed" transform="translate(1060 178)">
-              <rect width="220" height="38"></rect>
-              <text x="110" y="19">failed · amount_conflict</text>
+            <g class="terminal terminal--failed" transform="translate(1080 178)">
+              <rect width="210" height="38"></rect>
+              <text x="105" y="19">failed · amount_conflict</text>
             </g>
-            <g class="terminal terminal--failed" transform="translate(1060 238)">
-              <rect width="220" height="44" stroke-dasharray="5 4"></rect>
-              <text x="110" y="17">InjectedCrash</text>
-              <text x="110" y="32">retry · one row</text>
+            <g class="terminal terminal--failed" transform="translate(1080 238)">
+              <rect width="210" height="44" stroke-dasharray="5 4"></rect>
+              <text x="105" y="17">InjectedCrash</text>
+              <text x="105" y="32">retry · one row</text>
             </g>
 
             <g class="terminal terminal--failed" transform="translate(30 190)">
@@ -559,8 +559,8 @@
               <text x="115" y="20">failed · unknown_claim</text>
             </g>
             <g class="terminal terminal--amber" transform="translate(255 278)">
-              <rect width="220" height="40"></rect>
-              <text x="110" y="20">needs_info · no order_id</text>
+              <rect width="210" height="40"></rect>
+              <text x="105" y="20">needs_info · no order_id</text>
             </g>
             <g class="terminal terminal--amber" transform="translate(440 366)">
               <rect width="250" height="40"></rect>
@@ -571,7 +571,7 @@
               <text x="125" y="20">denied · zero quote</text>
             </g>
 
-            <g class="badge" transform="translate(600 206)">
+            <g class="badge" transform="translate(600 250)">
               <rect width="150" height="22"></rect>
               <text x="75" y="11">REFERENCE WEAKNESS</text>
             </g>
@@ -591,23 +591,23 @@
             <path class="edge" d="M565 128 L565 362"></path>
             <path class="edge" d="M865 128 L865 450"></path>
 
-            <path class="edge edge--weak" d="M675 128 L675 190 L770 190 L770 118"></path>
-            <path class="edge" d="M1020 72 L1060 71"></path>
-            <path class="edge" d="M1020 88 L1060 134"></path>
-            <path class="edge" d="M1020 100 L1060 197"></path>
-            <path class="edge edge--weak" d="M1020 110 L1060 260"></path>
+            <path class="edge edge--weak" d="M675 128 L675 230 L770 230 L770 118"></path>
+            <path class="edge" d="M1020 72 L1080 71"></path>
+            <path class="edge" d="M1020 88 L1080 134"></path>
+            <path class="edge" d="M1020 100 L1080 197"></path>
+            <path class="edge edge--weak" d="M1020 110 L1080 260"></path>
 
             <text class="edge-label" x="145" y="160">no</text>
             <text class="edge-label" x="365" y="244">no</text>
             <text class="edge-label" x="565" y="334">hidden</text>
             <text class="edge-label" x="865" y="424">zero</text>
             <text class="edge-label" x="725" y="82">no</text>
-            <text class="edge-label edge-label--weak" x="735" y="180">yes: seed % 5 == 0</text>
-            <text class="edge-label edge-label--weak" x="735" y="194">ticket delay ≠ delay_days</text>
-            <text class="edge-label" x="1040" y="64">ok</text>
-            <text class="edge-label" x="1038" y="118">refused</text>
-            <text class="edge-label" x="1036" y="188">conflict</text>
-            <text class="edge-label edge-label--weak" x="1034" y="248">crash</text>
+            <text class="edge-label edge-label--weak" x="735" y="206">yes: seed % 5 == 0</text>
+            <text class="edge-label edge-label--weak" x="735" y="220">ticket delay ≠ delay_days</text>
+            <text class="edge-label" x="1050" y="64">ok</text>
+            <text class="edge-label" x="1050" y="118">refused</text>
+            <text class="edge-label" x="1050" y="188">conflict</text>
+            <text class="edge-label edge-label--weak" x="1050" y="248">crash</text>
             <text class="note-text" x="20" y="580">model_override is traced when the weakness fires. The host still blocks writes that fail approval, ownership, or idempotency.</text>
           </svg>
         </div>
@@ -774,6 +774,7 @@
             <path class="edge" d="M280 733 L280 735"></path>
             <path class="edge" d="M280 815 L280 835"></path>
             <path class="edge" d="M280 915 L280 925"></path>
+            <text class="edge-label" x="294" y="913">no</text>
             <path class="edge" d="M280 977 L280 1025"></path>
 
             <path class="edge" d="M400 115 L560 95"></path>

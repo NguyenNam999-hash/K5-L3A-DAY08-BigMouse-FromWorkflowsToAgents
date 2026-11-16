@@ -236,6 +236,7 @@ svg.flow { display: block; width: 100%; height: auto; min-width: 1040px; }
 }
 
 .edge-label--weak { fill: var(--oxide); font-weight: 700; }
+.edge-label--start { text-anchor: start; }
 
 .terminal rect { fill: var(--card); stroke: var(--ink); stroke-width: 1.5; rx: 14; }
 .terminal text { font-family: var(--mono); font-size: 11px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
@@ -386,4 +387,65 @@ svg.flow { display: block; width: 100%; height: auto; min-width: 1040px; }
 @media (max-width: 620px) {
   .colophon { flex-direction: column; }
   .jump-nav a { flex: 1 1 auto; justify-content: center; }
+}
+
+/* Print */
+
+@page { size: A4 landscape; margin: 10mm; }
+
+@media print {
+  html, body {
+    background: var(--print-paper);
+    color: var(--print-ink);
+  }
+
+  .sheet { max-width: none; padding: 0; }
+
+  .jump-nav,
+  .legend,
+  .colophon,
+  .stamp {
+    display: none;
+  }
+
+  .masthead { break-after: page; }
+  h1 { font-size: 34pt; margin: 6mm 0 4mm; }
+  .dek { font-size: 12pt; }
+
+  .shape-section {
+    break-before: page;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 2px solid var(--print-ink);
+  }
+
+  .section-head { margin-bottom: 6mm; break-after: avoid; }
+  h2 { font-size: 20pt; }
+
+  .diagram-scroll {
+    overflow: visible;
+    border: 1px solid var(--rule-strong);
+    break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  svg.flow { min-width: 0; width: 100%; height: auto; }
+
+  svg[data-shape="host-gate"] {
+    width: auto;
+    height: 130mm;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .branch-table { margin-top: 5mm; }
+  .branch-table table { min-width: 0; font-size: 8pt; }
+  .branch-table thead { display: table-header-group; }
+  .branch-table tr { break-inside: avoid; }
+
+  .status {
+    background: transparent;
+    border-color: currentColor;
+  }
 }
