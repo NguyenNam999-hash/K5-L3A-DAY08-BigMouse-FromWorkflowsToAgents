@@ -20,8 +20,8 @@
 - Hoàn thiện orchestrator và handoff với các tool chỉ đọc; không chuyển secret hoặc dữ liệu ngoài allowlist sang investigator.
 - Bảo đảm mỗi shape gọi `finish()` để trả `RunResult` và ghi trace đúng contract.
 - Chuyển tiếp `crash_at` tới `durability.issue_refund` và để `InjectedCrash` được propagate để kiểm tra resume/idempotency.
-- Commit chính: `[điền commit hash sau khi commit]`.
-- Test đã thêm hoặc sửa: `[điền tên test/commit test của cá nhân]`.
+- Commit chính: `27903a0`.
+- Test đã thêm hoặc sửa: không thêm test mới; xác minh bằng `tests/test_public_matrix.py` (T01–T14), `tests/test_trace_contract.py` và `tests/test_handoff_secret.py`.
 
 ## 4. Bằng chứng
 
@@ -30,7 +30,7 @@
 - T11/T12 retry và crash: `8 passed`.
 - Handoff và trace contract: `9 passed`.
 - Crash suite: `crash_safety = 20/20` trong `src/reports/crash.json`.
-- Run ID benchmark: `[điền sau khi chạy benchmark]`.
+- Run ID benchmark: `R-workflow-C-001-s11` (dữ liệu trong `src/reports/benchmark.json`).
 
 ## 5. Công cụ AI đã dùng
 
