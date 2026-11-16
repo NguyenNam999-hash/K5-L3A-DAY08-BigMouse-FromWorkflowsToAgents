@@ -224,6 +224,7 @@ svg.flow { display: block; width: 100%; height: auto; min-width: 1040px; }
 .node--host rect { fill: var(--blue-soft); stroke: var(--blue); stroke-width: 3; }
 .node--host .host-inner { fill: none; stroke: var(--blue); stroke-width: 1; }
 .node--ledger rect { fill: var(--green-soft); stroke: var(--green); }
+.node--ledger ellipse { fill: var(--green-soft); stroke: var(--green); stroke-width: 1.5; }
 
 .edge { fill: none; stroke: var(--ink-soft); stroke-width: 1.4; marker-end: url(#arrow); }
 .edge--weak { stroke: var(--oxide); stroke-dasharray: 6 4; }
@@ -355,6 +356,7 @@ svg.flow { display: block; width: 100%; height: auto; min-width: 1040px; }
 .swatch--branch { background: var(--amber-soft); border-color: var(--amber); transform: rotate(45deg) scale(0.72); }
 .swatch--host { background: var(--blue-soft); border: 3px double var(--blue); }
 .swatch--ledger { background: var(--green-soft); border-color: var(--green); border-radius: 8px / 4px; }
+.swatch--spine { border: 0; width: 26px; height: 16px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; }
 .swatch--resolved { background: var(--green-soft); border-color: var(--green); border-radius: 999px; }
 .swatch--amber { background: var(--amber-soft); border-color: var(--amber); border-radius: 999px; }
 .swatch--failed { background: var(--oxide-soft); border-color: var(--oxide); border-radius: 999px; border-style: dashed; }
