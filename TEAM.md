@@ -13,8 +13,12 @@ Thông tin cá nhân và vai trò để trống theo yêu cầu. Bằng chứng 
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
-|   1 | Vũ Văn Hào | 2A202603419 | haovu1663@gmail.com | haovu1663-cryto | CP4 Durability & Security Lead |
-|   2 |        |      |       |        |         |
+| STT | Họ tên | MSSV | Email | GitHub | Vai trò |
+| --: | ------ | ---- | ----- | ------ | ------- |
+|   1 | Nguyễn Lê Hải Nam | 2A202603699 | nam.nlh2001@gmail.com |        | Evaluation & Benchmarking (CP5) |
+|   2 | Lê Thái Dương     | 2A202603415 |       |        | CP2/CP3 Shapes & Handoff Lead |
+|   3 | Vũ Văn Hào     | 2A202603419 | haovu1663@gmail.com | haovu1663-cryto | CP4 Durability & Security Lead |
+|   4 | Nguyễn Triều Dương | 2A202603524 |       |        | Report & ADR Architecture |
 
 Gợi ý chia vai:
 
@@ -28,6 +32,7 @@ Gợi ý chia vai:
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
 | Vũ Văn Hào | CP4 Durability & Security Lead | 09e67f3 | tests/test_cp4_durability_and_secrets.py |
+| Lê Thái Dương | CP2/CP3 Shapes & Handoff Lead | 27903a0 | tests/test_public_matrix.py |
 
 ## Cá nhân
 
