@@ -4,7 +4,7 @@ window.DEMO_DATA = {
   "benchmark": "src/reports/benchmark.json",
   "traces": "src/traces",
   "trace_count": 280,
-  "generated_at": "2026-11-16T12:09:00+00:00"
+  "generated_at": "2026-11-16T12:18:36+00:00"
  },
  "claims": [
   {
