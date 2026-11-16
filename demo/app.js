@@ -205,7 +205,7 @@
       seeds = state.claimId ? seedsFor(shape, state.claimId) : [];
     }
     state.seed = seeds.length ? seeds[0] : 11;
-    render();
+    render(true);
   }
 
   function selectClaim(claimId) {
@@ -213,12 +213,12 @@
     var seeds = seedsFor(state.shape, claimId);
     if (seeds.indexOf(11) !== -1) state.seed = 11;
     else if (seeds.length) state.seed = seeds[0];
-    render();
+    render(true);
   }
 
   function selectSeed(seed) {
     state.seed = seed;
-    render();
+    render(true);
   }
 
   function renderTabs() {
@@ -272,6 +272,8 @@
         var trial = trialFor(state.shape, claim.claim_id, seed);
         var chip = el("button", "seed-chip " + (trial && trial.passed ? "pass" : "fail"));
         chip.type = "button";
+        chip.dataset.claimId = claim.claim_id;
+        chip.dataset.seed = seed;
         chip.textContent = seed + (trial && trial.passed ? " ✓" : " ✗");
         chip.setAttribute("aria-label", "seed " + seed + ", " + (trial && trial.passed ? "pass" : "fail"));
         if (claim.claim_id === state.claimId && seed === state.seed) {
@@ -513,15 +515,18 @@
     var isVisited = visited.indexOf(node.id) !== -1;
     var cls = "node state-" + (isVisited ? "visited" : "unvisited") + " type-" + node.type;
     if (node.type === "terminal" && isVisited) cls += " result-" + status;
+    var weakness = node.id === "model_override"
+      ? " — reference weakness: on a seed divisible by 5, the swarm can trust the ticket delay"
+      : "";
     var g = svgEl("g", {
       class: cls,
       "data-node-id": node.id,
       tabindex: "0",
       role: "button",
-      "aria-label": node.label + " node, " + (isVisited ? "visited" : "not visited")
+      "aria-label": node.label + " node, " + (isVisited ? "visited" : "not visited") + weakness
     });
     var title = svgEl("title", {});
-    title.textContent = node.label + " · " + (isVisited ? "visited" : "not visited") + " · " + node.type;
+    title.textContent = node.label + " · " + (isVisited ? "visited" : "not visited") + " · " + node.type + weakness;
     g.appendChild(title);
     drawNodeShape(g, node);
 
@@ -588,7 +593,7 @@
     var wrap = el("div", "diagram-wrap");
     var svg = svgEl("svg", {
       viewBox: "0 0 980 290",
-      role: "img",
+      role: "group",
       "aria-label": state.shape + " pipeline, " + visited.length + " of " + graph.nodes.length + " nodes visited"
     });
     var defs = svgEl("defs", {});
@@ -651,10 +656,15 @@
 
     wrap.appendChild(svg);
     wrap.appendChild(el("p", "diagram-state", "visited " + visited.length + " of " + graph.nodes.length + " nodes · status " + status));
+    wrap.appendChild(el("p", "diagram-boundary", "Money and the ledger are host code; the model reads and drafts."));
     renderLegend(wrap);
     els.diagram.appendChild(wrap);
 
-    els.diagramNote.textContent = visited.length + " of " + graph.nodes.length + " nodes visited";
+    if (state.shape === "swarm") {
+      els.diagramNote.textContent = "Reference weakness: on a seed divisible by 5, the swarm can trust the ticket delay over the order row.";
+    } else {
+      els.diagramNote.textContent = visited.length + " of " + graph.nodes.length + " nodes visited";
+    }
     if (!trace) {
       els.diagram.appendChild(el("p", "step-note", "No trace for this run. The map stays unvisited."));
     }
@@ -759,7 +769,38 @@
     els.crash.appendChild(detail);
   }
 
-  function render() {
+  function focusDescriptor() {
+    var active = document.activeElement;
+    if (!active || active === document.body) return null;
+    var data = active.dataset || {};
+    if (data.seed) return { kind: "seed", claim: data.claimId, seed: data.seed };
+    if (data.shape) return { kind: "shape", value: data.shape };
+    if (data.stepIndex !== undefined) return { kind: "step", value: data.stepIndex };
+    if (data.nodeId) return { kind: "node", value: data.nodeId };
+    if (data.claimId) return { kind: "claim", value: data.claimId };
+    return null;
+  }
+
+  function restoreFocus(descriptor) {
+    var selector = null;
+    if (descriptor.kind === "seed") {
+      selector = '[data-claim-id="' + descriptor.claim + '"][data-seed="' + descriptor.seed + '"]';
+    } else if (descriptor.kind === "shape") {
+      selector = '[data-shape="' + descriptor.value + '"]';
+    } else if (descriptor.kind === "step") {
+      selector = '[data-step-index="' + descriptor.value + '"]';
+    } else if (descriptor.kind === "node") {
+      selector = '[data-node-id="' + descriptor.value + '"]';
+    } else if (descriptor.kind === "claim") {
+      selector = 'tr[data-claim-id="' + descriptor.value + '"]';
+    }
+    if (!selector) return;
+    var node = document.querySelector(selector);
+    if (node && node.focus) node.focus({ preventScroll: true });
+  }
+
+  function render(preserveFocus) {
+    var descriptor = preserveFocus ? focusDescriptor() : null;
     renderTabs();
     renderClaims();
     renderResult();
@@ -767,6 +808,7 @@
     renderSteps();
     renderCompare();
     renderCrash();
+    if (descriptor) restoreFocus(descriptor);
   }
 
   if (state.claimId) {

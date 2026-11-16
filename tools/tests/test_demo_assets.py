@@ -25,3 +25,15 @@ def test_every_shape_has_a_graph_block():
     app = (ROOT / "demo" / "app.js").read_text(encoding="utf-8")
     for shape in NODE_IDS:
         assert re.search(rf'^\s*{shape}: \{{', app, flags=re.MULTILINE), shape
+
+
+def test_swarm_weakness_note_is_rendered():
+    app = (ROOT / "demo" / "app.js").read_text(encoding="utf-8")
+    assert "Reference weakness" in app
+    assert "seed divisible by 5" in app
+
+
+def test_diagram_group_keeps_buttons_announced():
+    app = (ROOT / "demo" / "app.js").read_text(encoding="utf-8")
+    assert 'role: "img"' not in app
+    assert "Money and the ledger are host code" in app
