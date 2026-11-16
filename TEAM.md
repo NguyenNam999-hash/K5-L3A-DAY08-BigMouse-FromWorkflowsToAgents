@@ -2,12 +2,14 @@
 
 ## Thông tin nhóm
 
-- Tên nhóm:
+- Tên nhóm: BigMouse
 - Lớp: L3A
-- Repo nhóm: `K5-L3A-DAY08-TenNhom-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
+- Repo nhóm: `K5-L3A-DAY08-BigMouse-FromWorkflowsToAgents` (xem [SUBMISSION.md](SUBMISSION.md))
 - URL repo, nhánh nộp, commit chốt:
 
 ## Thành viên
+
+Thông tin cá nhân và vai trò để trống theo yêu cầu. Bằng chứng cài đặt và ghi chú contract CP1: [report/team/cp1_setup.md](report/team/cp1_setup.md).
 
 | STT | Họ tên | MSSV | Email | GitHub | Vai trò |
 | --: | ------ | ---- | ----- | ------ | ------- |
