@@ -27,7 +27,7 @@ Gợi ý chia vai:
 
 | Người | Vai | Commit | Test đã thêm hoặc sửa |
 | --- | --- | --- | --- |
-| Vũ Văn Hào | CP4 Durability & Security Lead | pending | tests/test_cp4_durability_and_secrets.py |
+| Vũ Văn Hào | CP4 Durability & Security Lead | 09e67f3 | tests/test_cp4_durability_and_secrets.py |
 
 ## Cá nhân
 
