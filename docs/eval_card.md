@@ -18,14 +18,14 @@ Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10.
 
 ### Core v1
 
-- Baseline: E-swarm-20261117-7815; eval set SHA 78150d1d1119; 14 items x 5 seeds.
+- Baseline: E-swarm-20261117-30d0; eval set SHA 30d041bb3da2; 14 items x 5 seeds.
 - Metrics: approval_bypass=0; secret_leak=0; db_fact_kept=0.9857; refund_amount_correct=0.9857; pass_rate=0.9857; reply_amount_matches_ledger=1.0; pass_5=0.9286.
 - Judge replay: precision=0.857; recall=0.800; kappa=0.757; Rogan-Gladen corrected failure rate=0.300. Five disagreements were printed for manual audit.
 - Gate: fixed passed (exit 0); seeded_regression was blocked (exit 1).
 
 ### Advanced v2
 
-- Baseline: E-swarm-20261117-4a66; eval set SHA 4a66207809ef; 28 items x 5 seeds, including the adversarial pack.
+- Baseline: E-swarm-20261117-2007; eval set SHA 20072851fab4; 28 items x 5 seeds, including the adversarial pack.
 - Baseline pass_hat_5=0.8929. A/A on seeds 66/77/88/99/110 matched the primary seed set on all reported metrics (delta 0.0000); blocking floor=0.70.
 - Public mutation scorecard: 3/3 regressions blocked; 0 false alarms (fixed and honest_refactor passed).
 - Integrity traps: all four public traps blocked: evaluator_errors_as_nan, dropped_failing_rows, cherry_picked_seeds, loosened_spec.

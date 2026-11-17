@@ -35,7 +35,11 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def sha12(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+    # Git checks out text files with platform-specific newlines (CRLF on many
+    # Windows workstations, LF on CI). Hash canonical LF bytes so the baseline
+    # manifest has the same eval-set identity on every platform.
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(content).hexdigest()[:12]
 
 
 def build(source: Path = SOURCE) -> tuple[int, int]:
